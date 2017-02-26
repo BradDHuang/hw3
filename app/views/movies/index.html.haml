@@ -2,12 +2,12 @@
 %h1 All Movies
 
 %table#movies
-= form_tag movies_path, :method => :get do
-  Include:
-  - @all_ratings.each do |rating|
-    = rating
-    = check_box_tag "ratings[#{rating}]"
-  = submit_tag 'Refresh'
+  = form_tag movies_path, :method => :get, id: "ratings_form" do
+    Include:
+    - @rating_selected.keys.each do |rating|
+      = rating
+      = check_box_tag "ratings[#{rating}]", 1, @rating_selected[rating]
+    = submit_tag 'Refresh', id:"ratings_submit"
   %thead
     %tr
       %th{class: ('hilite' if params[:sort_by] == 'title'), id: 'title_header'}= link_to('Movie Title', movies_path(sort_by: 'title'))
@@ -21,5 +21,4 @@
         %td= movie.rating
         %td= movie.release_date
         %td= link_to "More about #{movie.title}", movie_path(movie)
-
 = link_to 'Add new movie', new_movie_path

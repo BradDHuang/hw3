@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+  
   def initialize
      @all_ratings = Movie.all_ratings
      @rating_selected = @all_ratings.map { |rating| [rating, true] }.to_h
@@ -23,12 +24,12 @@ class MoviesController < ApplicationController
       @movies = @movies.where(rating: ratings)
       @all_ratings.each do |rating|
       @rating_selected[rating] = ratings.include? rating
- +    end
+      end
    end
-  sort = params[:sort_by]
-    if sort == 'title' || sort == 'release_date'
+      sort = params[:sort_by]
+   if sort == 'title' || sort == 'release_date'
        @movies = @movies.order(sort)
-    end
+   end
   end
 
   def new
@@ -58,5 +59,4 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-
 end
