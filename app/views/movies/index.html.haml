@@ -6,7 +6,7 @@
     Include:
     - @rating_selected.keys.each do |rating|
       = rating
-      = check_box_tag, "ratings[#{rating}]", 1, @rating_selected[rating]
+      = check_box_tag "ratings[#{rating}]", 1, @rating_selected[rating]
     = submit_tag 'Refresh', id:"ratings_submit"
   %table#movies
   %thead
