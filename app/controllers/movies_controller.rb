@@ -17,6 +17,10 @@ class MoviesController < ApplicationController
   end
 
   def index
+    if (params[:sort_by]==nil && params[:ratings]=={} && (session[:sort_by]!=nil or session[:filter]!=nil))
+ 	 flash.keep
+ 	 redirect_to movies_path(:sort => session[:sort_by], :ratings => session[:filter])
+    end
       @movies = Movie.all
       if params[:ratings]
       ratings = params[:ratings].keys
@@ -43,10 +47,7 @@ class MoviesController < ApplicationController
        @movies.order!(sort_by)
        session[:sort_by] = sort_by
    end
-   if (params[:sort_by]==nil && params[:ratings]=={} && (session[:sort_by]!=nil or session[:filter]!=nil))
- 	 flash.keep
- 	 redirect_to movies_path(:sort => session[:sort_by], :ratings => session[:filter])
-   end
+   
   end
 
   def new
