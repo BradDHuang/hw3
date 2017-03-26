@@ -17,37 +17,36 @@ class MoviesController < ApplicationController
   end
 
   def index
-    if (params[:sort_by]==nil && params[:ratings]=={} && (session[:sort_by]!=nil or session[:filter]!=nil))
- 	 flash.keep
- 	 redirect_to movies_path(:sort => session[:sort_by], :ratings => session[:filter])
-    end
-      @movies = Movie.all
-      if params[:ratings]
+    @movies = Movie.all
+
+    if params[:ratings]
       ratings = params[:ratings].keys
-      elsif session[:filter]
+    elsif session[:filter]
       ratings = session[:filter]
-      else
+    else
       ratings = nil
-      end
-     if params[:sort_by]
-       sort_by = params[:sort_by]
-     elsif session[:sort_by]
-       sort_by = session[:sort_by]
-     else
-       sort_by = nil
-     end
-   if ratings
-      @movies.where!(rating: ratings)
+    end
+
+    if params[:sort_by]
+      sort_by = params[:sort_by]
+    elsif session[:sort_by]
+      sort_by = session[:sort_by]
+    else
+      sort_by = nil
+    end
+
+    if ratings
+      @movies = @movies.where!(rating: ratings)
       @all_ratings.each do |rating|
-      @rating_selected[rating] = ratings.include? rating
+        @rating_selected[rating] = ratings.include? rating
       end
       session[:filter] = ratings
-   end
-   if sort_by == 'title' || sort_by == 'release_date'
-       @movies.order!(sort_by)
-       session[:sort_by] = sort_by
-   end
-   
+    end
+
+    if sort_by == 'title' || sort_by == 'release_date'
+      @movies.order!(sort_by)
+      session[:sort_by] = sort_by
+    end
   end
 
   def new
